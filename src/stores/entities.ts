@@ -1,4 +1,4 @@
-import type { Device, DevicesGroup } from '@/api/types';
+import type { Device, DevicesGroup } from '@/shared/api/types';
 import { defineStore } from 'pinia';
 import { computed, reactive } from 'vue';
 

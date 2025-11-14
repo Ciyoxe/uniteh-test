@@ -1,5 +1,5 @@
 import type { Device, DevicesGroup } from './types';
-import { waitFor } from '@/shared/utils';
+import { waitFor } from '@/shared/lib/utils';
 import { SampleDevices, SampleGroups } from './data';
 
 type WebsocketDeviceEvent = {
