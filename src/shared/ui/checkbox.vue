@@ -8,15 +8,13 @@
 </template>
 
 <script setup lang="ts">
-import IconCheck from '../icons/check.vue';
+import IconCheck from '@/shared/icons/check.vue';
 
 const checked = defineModel<boolean>();
 </script>
 
 <style scoped>
 .checkbox {
-    display: inline-flex;
-    align-items: center;
     position: relative;
 }
 
