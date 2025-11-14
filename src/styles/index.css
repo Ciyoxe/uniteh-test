@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    font-family: 'Roboto', sans-serif;
+
+    --color-base: #f3f4f6;
+    --color-primary: #c0d2fa;
+    --color-secondary: #50bba9;
+    --color-accent: #589deb;
+    --color-text: #111827;
+    --color-warn: #f97316;
+}

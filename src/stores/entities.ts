@@ -19,23 +19,35 @@ export const useEntitiesStore = defineStore('entities', () => {
             };
         }),
     );
+    const devicesWithoutGroups = computed(() => {
+        const deviceIds = new Set(groupsList.value.flatMap((group) => group.deviceIds));
+        return devicesList.value.filter((device) => !deviceIds.has(device.id));
+    });
 
     const getDeviceById = (id: number) => devices.get(id);
     const getGroupById = (id: string) => groups.get(id);
 
+    const updateGroup = (group: DevicesGroup) => {
+        groups.set(group.id, group);
+    };
     const updateDevice = (device: Device) => {
         devices.set(device.id, device);
     };
-    const updateGroup = (group: DevicesGroup) => {
-        groups.set(group.id, group);
+    const deleteDevice = (id: number) => {
+        devices.delete(id);
+        groups.forEach((group) => {
+            group.deviceIds = group.deviceIds.filter((deviceId) => deviceId !== id);
+        });
     };
 
     return {
         devicesList,
         groupsList,
         groupsWithDevices,
-        updateDevice,
+        devicesWithoutGroups,
         updateGroup,
+        updateDevice,
+        deleteDevice,
         getDeviceById,
         getGroupById,
     };

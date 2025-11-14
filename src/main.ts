@@ -3,6 +3,7 @@ import { createYmaps } from 'vue-yandex-maps';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import App from './App.vue';
+import './styles/index.css';
 
 createApp(App)
     .use(createPinia().use(piniaPluginPersistedstate))
