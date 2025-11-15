@@ -1,0 +1,13 @@
+<template>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="currentColor"
+        viewBox="0 -960 960 960"
+    >
+        <path
+            d="m40-120 440-760 440 760zm138-80h604L480-720zm302-40q17 0 29-11t11-29-11-28-29-12-28 12-12 28 12 29 28 11m-40-120h80v-200h-80zm40-100"
+        />
+    </svg>
+</template>

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { computed, reactive } from 'vue';
 
 export const useEntitiesStore = defineStore('entities', () => {
-    // State as maps id -> entity
+    // id -> entity
     const devices = reactive<Map<number, Device>>(new Map());
     const groups = reactive<Map<string, DevicesGroup>>(new Map());
 
@@ -45,6 +45,7 @@ export const useEntitiesStore = defineStore('entities', () => {
         groupsList,
         groupsWithDevices,
         devicesWithoutGroups,
+
         updateGroup,
         updateDevice,
         deleteDevice,

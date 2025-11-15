@@ -7,33 +7,33 @@
             tabindex="0"
             @click="open = !open"
         >
-            <slot name="trigger" />
+            <slot name="trigger" :open />
         </div>
         <TransitionExpand>
             <div v-show="open" ref="content" class="popover__content">
-                <slot name="content" />
+                <slot name="content" :close="() => (open = false)" />
             </div>
         </TransitionExpand>
     </div>
 </template>
 
 <script setup lang="ts">
-import { useTemplateRef, watchEffect, ref } from 'vue';
+import { useTemplateRef, computed } from 'vue';
 import { TransitionExpand } from '@morev/vue-transitions';
 import { onClickOutside, useElementBounding } from '@vueuse/core';
 
 defineSlots<{
-    trigger: () => unknown;
-    content: () => unknown;
+    trigger: (props: { open: boolean }) => unknown;
+    content: (props: { close: () => void }) => unknown;
 }>();
 
-const open = defineModel<boolean>();
+const open = defineModel({ default: false });
 const popover = useTemplateRef('popover');
 const trigger = useTemplateRef('trigger');
 const content = useTemplateRef('content');
 
-const top = ref(0);
-const left = ref(0);
+const top = computed(() => calculateVerticalPosition());
+const left = computed(() => calculateHorizontalPosition());
 
 const triggerBounds = useElementBounding(trigger, { immediate: true });
 const contentBounds = useElementBounding(content, { immediate: true });
@@ -42,34 +42,15 @@ onClickOutside(popover, () => {
     open.value = false;
 });
 
-watchEffect(() => {
-    if (!open.value) return;
-
-    top.value = calculateVerticalPosition();
-    left.value = calculateHorizontalPosition();
-});
-
-/**
- * Calculate vertical position, preferring below trigger but flipping above if needed
- */
-function calculateVerticalPosition(): number {
-    const contentHeight = contentBounds.height.value;
+const calculateVerticalPosition = () => {
     const triggerBottom = triggerBounds.bottom.value;
-    const triggerTop = triggerBounds.top.value;
-
-    const wouldOverflowBottom = triggerBottom + contentHeight > window.innerHeight;
-    if (wouldOverflowBottom) {
-        // Flip above trigger if content would overflow bottom
-        return triggerTop - contentHeight;
-    }
-
     return triggerBottom;
-}
+};
 
 /**
- * Calculate horizontal position, centering relative to trigger and clamping to viewport
+ * Calculate horizontal position, clamping to viewport
  */
-function calculateHorizontalPosition(): number {
+const calculateHorizontalPosition = () => {
     const contentWidth = contentBounds.width.value;
     const triggerLeft = triggerBounds.left.value;
     const triggerWidth = triggerBounds.width.value;
@@ -88,12 +69,14 @@ function calculateHorizontalPosition(): number {
     }
 
     return leftEdge;
-}
+};
 </script>
 
 <style scoped>
 .popover__trigger {
+    cursor: pointer;
     width: fit-content;
+    height: fit-content;
 }
 .popover__content {
     z-index: 1;

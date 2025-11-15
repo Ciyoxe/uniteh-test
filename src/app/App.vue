@@ -20,8 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import { useWebsocketEventsStream } from './shared/api/websocket-mock';
-import { useEntitiesStore } from './stores/entities';
+import { useWebsocketEventsStream } from '../shared/api/websocket-mock';
+import { useEntitiesStore } from '../stores/entities';
 import { ref } from 'vue';
 import UiButton from './shared/ui/button.vue';
 import IconSignal from './shared/icons/signal.vue';

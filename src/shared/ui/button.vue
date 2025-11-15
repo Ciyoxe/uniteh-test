@@ -20,8 +20,8 @@ const { type = 'primary' } = defineProps<{
     background-color: var(--current-color);
     color: var(--color-text);
     border: 1px solid color-mix(in srgb, var(--current-color), black 20%);
-    border-radius: 16px;
-    padding: 12px 24px;
+    border-radius: 12px;
+    padding: 12px;
     font-size: 1.25em;
     transition: background-color 0.3s ease-in-out;
 }

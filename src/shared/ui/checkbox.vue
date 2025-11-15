@@ -1,6 +1,6 @@
 <template>
     <span class="checkbox">
-        <input type="checkbox" v-model="checked" :checked class="checkbox__input" v-bind="$attrs" />
+        <input :id :checked v-model="value" type="checkbox" class="checkbox__input" />
         <span :class="['checkbox__box', { checked }]">
             <IconCheck />
         </span>
@@ -10,7 +10,12 @@
 <script setup lang="ts">
 import IconCheck from '@/shared/icons/check.vue';
 
-const checked = defineModel<boolean>();
+defineProps<{
+    id: string;
+    checked: boolean;
+}>();
+
+const value = defineModel<boolean>();
 </script>
 
 <style scoped>
