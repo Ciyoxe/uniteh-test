@@ -76,6 +76,8 @@ export const useSettingsStore = defineStore(
         };
 
         const isChannelSelected = (deviceId: number, channelIdx: number) => {
+            if (!isDeviceSelected(deviceId)) return false;
+
             if (mode.value === 'online') {
                 return hasArrayOptionInMap(selectedOnlineChannelIdxs, deviceId, channelIdx);
             } else {
@@ -83,6 +85,10 @@ export const useSettingsStore = defineStore(
             }
         };
         const toggleChannelSelected = (deviceId: number, channelIdx: number) => {
+            if (!isDeviceSelected(deviceId)) {
+                throw new Error('Cannot toggle channel selection for non-selected device');
+            }
+
             if (mode.value === 'online') {
                 toggleArrayOptionInMap(selectedOnlineChannelIdxs, deviceId, channelIdx);
             } else {

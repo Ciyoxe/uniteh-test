@@ -24,7 +24,7 @@
             </div>
         </label>
         <TransitionExpand>
-            <DeviceCamsList v-if="expanded" :device />
+            <EntityChannelCardsGrid v-if="expanded" :device />
         </TransitionExpand>
     </div>
 </template>
@@ -42,7 +42,7 @@ import IconAlert from '@/shared/icons/alert.vue';
 import UiCheckbox from '@/shared/ui/checkbox.vue';
 import UiButton from '@/shared/ui/button.vue';
 import DeviceCardActions from './card-actions.vue';
-import DeviceCamsList from './cams-list.vue';
+import EntityChannelCardsGrid from '../channel/cards-grid.vue';
 
 const { device, groupId = null } = defineProps<{
     groupId?: string | null;
