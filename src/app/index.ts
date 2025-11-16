@@ -2,7 +2,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createYmaps } from 'vue-yandex-maps';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
-import App from './app/index.vue';
+import App from './index.vue';
 
 createApp(App)
     .use(createPinia().use(piniaPluginPersistedstate))
