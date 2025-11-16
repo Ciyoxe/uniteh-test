@@ -1,55 +1,64 @@
 import type { Device, DevicesGroup } from '@/shared/api/types';
 import { defineStore } from 'pinia';
-import { computed, reactive } from 'vue';
+import { reactive, ref } from 'vue';
+
+const deviceMatchesQuery = (device?: Device, query?: string): device is Device => {
+    if (!device) {
+        return false;
+    }
+    if (!query) {
+        return true;
+    }
+    return (
+        device.name.toUpperCase().includes(query.toUpperCase()) ||
+        device.id.toString().includes(query)
+    );
+};
 
 export const useEntitiesStore = defineStore('entities', () => {
     // id -> entity
-    const devices = reactive<Map<number, Device>>(new Map());
-    const groups = reactive<Map<string, DevicesGroup>>(new Map());
+    const searchQuery = ref<string>();
+    const devices = reactive(new Map<number, Device>());
+    const groups = reactive(new Map<string, DevicesGroup>());
 
-    const devicesList = computed(() => Array.from(devices.values()));
-    const groupsList = computed(() => Array.from(groups.values()));
-
-    const groupsWithDevices = computed(() =>
-        groupsList.value.map((group) => {
-            return {
-                id: group.id,
-                name: group.name,
-                devices: group.deviceIds.map((id) => getDeviceById(id)).filter(Boolean) as Device[],
-            };
-        }),
-    );
-    const devicesWithoutGroups = computed(() => {
-        const deviceIds = new Set(groupsList.value.flatMap((group) => group.deviceIds));
-        return devicesList.value.filter((device) => !deviceIds.has(device.id));
-    });
-
-    const getDeviceById = (id: number) => devices.get(id);
-    const getGroupById = (id: string) => groups.get(id);
-
-    const updateGroup = (group: DevicesGroup) => {
-        groups.set(group.id, group);
-    };
-    const updateDevice = (device: Device) => {
-        devices.set(device.id, device);
-    };
     const deleteDevice = (id: number) => {
         devices.delete(id);
         groups.forEach((group) => {
             group.deviceIds = group.deviceIds.filter((deviceId) => deviceId !== id);
         });
     };
+    const getDevicesInGroup = (groupId: string | null) => {
+        // Non-grouped devices
+        if (groupId === null) {
+            const deviceIdsUsedInGroups = new Set(
+                Array.from(groups.values()).flatMap((group) => group.deviceIds),
+            );
+            return Array.from(devices.keys())
+                .filter((id) => !deviceIdsUsedInGroups.has(id))
+                .map((id) => devices.get(id)!)
+                .filter((d) => deviceMatchesQuery(d, searchQuery.value));
+        }
+
+        const group = groups.get(groupId);
+        if (!group) {
+            return [];
+        }
+        return group.deviceIds
+            .map((id) => devices.get(id))
+            .filter((d) => deviceMatchesQuery(d, searchQuery.value));
+    };
+    const getGroupsList = () => {
+        return Array.from(groups.keys())
+            .filter((groupId) => getDevicesInGroup(groupId).length > 0)
+            .map((groupId) => groups.get(groupId)!);
+    };
 
     return {
-        devicesList,
-        groupsList,
-        groupsWithDevices,
-        devicesWithoutGroups,
-
-        updateGroup,
-        updateDevice,
+        searchQuery,
+        devices,
+        groups,
         deleteDevice,
-        getDeviceById,
-        getGroupById,
+        getGroupsList,
+        getDevicesInGroup,
     };
 });

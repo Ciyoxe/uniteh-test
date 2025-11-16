@@ -4,12 +4,12 @@
             <div class="device-card__header">
                 <UiCheckbox
                     :id="`device-card-${device.id}`"
-                    :checked="appStore.isDeviceEnabled(device.id)"
-                    @change="appStore.toggleDeviceEnabled(device.id)"
+                    :checked="selected"
+                    @change="settingsStore.toggleDeviceSelected(device.id)"
                 />
                 <p class="device-card__name">{{ device.name }}</p>
             </div>
-            <div v-if="appStore.mode === 'online'" class="device-card__online">
+            <div v-if="settingsStore.mode === 'online'" class="device-card__online">
                 <IconCar />
                 <IconSignal :strength="device.wifi" />
                 <p class="device-card__time">{{ timeFormatted }}</p>
@@ -18,24 +18,23 @@
                 <IconAlert :class="['device-card__alert', { shown: isAlarmShown }]" />
                 <DeviceCardActions class="device-card__actions" />
 
-                <UiButton @click="appStore.toggleDeviceExpanded(device.id)">
-                    <IconChevron
-                        :direction="appStore.isDeviceExpanded(device.id) ? 'up' : 'down'"
-                    />
+                <UiButton @click="settingsStore.toggleDeviceExpanded(groupId, device.id)">
+                    <IconChevron :direction="expanded ? 'up' : 'down'" />
                 </UiButton>
             </div>
         </label>
         <TransitionExpand>
-            <DeviceCamsList v-if="appStore.isDeviceExpanded(device.id)" :device />
+            <DeviceCamsList v-if="expanded" :device />
         </TransitionExpand>
     </div>
 </template>
+>
 
 <script setup lang="ts">
 import { TransitionExpand } from '@morev/vue-transitions';
 import { computed } from 'vue';
+import { useSettingsStore } from '@/stores/settings';
 import type { Device } from '@/shared/api/types';
-import { useAppStore } from '@/stores/app';
 import IconChevron from '@/shared/icons/chevron.vue';
 import IconCar from '@/shared/icons/car.vue';
 import IconSignal from '@/shared/icons/signal.vue';
@@ -45,16 +44,17 @@ import UiButton from '@/shared/ui/button.vue';
 import DeviceCardActions from './card-actions.vue';
 import DeviceCamsList from './cams-list.vue';
 
-const { device } = defineProps<{
+const { device, groupId = null } = defineProps<{
+    groupId?: string | null;
     device: Device;
 }>();
 
-const appStore = useAppStore();
+const settingsStore = useSettingsStore();
 
-const isAlarmShown = computed(() => device.alarm && appStore.mode === 'online');
-const timeFormatted = computed(() => {
-    return new Date(device.timestamp).toLocaleString();
-});
+const isAlarmShown = computed(() => device.alarm && settingsStore.mode === 'online');
+const timeFormatted = computed(() => new Date(device.timestamp).toLocaleString());
+const expanded = computed(() => settingsStore.isDeviceExpanded(groupId, device.id));
+const selected = computed(() => settingsStore.isDeviceSelected(device.id));
 </script>
 
 <style scoped>
@@ -86,7 +86,7 @@ const timeFormatted = computed(() => {
 }
 
 .device-card__name {
-    font-size: 1em;
+    font-size: 1.2em;
 }
 
 .device-card__name,

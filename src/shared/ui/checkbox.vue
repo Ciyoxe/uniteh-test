@@ -11,8 +11,8 @@
 import IconCheck from '@/shared/icons/check.vue';
 
 defineProps<{
-    id: string;
-    checked: boolean;
+    id?: string;
+    checked?: boolean;
 }>();
 
 const value = defineModel<boolean>();

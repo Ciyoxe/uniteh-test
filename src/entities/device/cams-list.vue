@@ -20,13 +20,13 @@
 
 <script setup lang="ts">
 import type { Device } from '@/shared/api/types';
-import { useAppStore } from '@/stores/app';
+import { useSettingsStore } from '@/stores/settings';
 
 defineProps<{
     device: Device;
 }>();
 
-const appStore = useAppStore();
+const appStore = useSettingsStore();
 </script>
 
 <style scoped>
