@@ -1,6 +1,6 @@
 import { structuredSerializer } from '@/shared/lib/serialization';
 import { defineStore } from 'pinia';
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 
 const toggleValueInSet = <T>(set: Set<T>, value: T) => {
     if (set.has(value)) {
@@ -37,38 +37,38 @@ export const useSettingsStore = defineStore(
     () => {
         const mode = ref<'online' | 'archive'>('online');
 
-        const expandedGroupIds = reactive(new Set<string>());
-        const expandedDeviceIds = reactive(new Map<string | null, number[]>()); // group id (null for non-grouped devices) -> expanded device ids
+        const expandedGroupIds = ref(new Set<string>());
+        const expandedDeviceIds = ref(new Map<string | null, number[]>()); // group id (null for non-grouped devices) -> expanded device ids
 
-        const selectedOnlineDeviceIds = reactive(new Set<number>());
-        const selectedOnlineChannelIdxs = reactive(new Map<number, number[]>()); // device id -> selected channel indices (1-based)
+        const selectedOnlineDeviceIds = ref(new Set<number>());
+        const selectedOnlineChannelIdxs = ref(new Map<number, number[]>()); // device id -> selected channel indices (1-based)
 
         const selectedArchiveDeviceId = ref<number | null>(null);
-        const selectedArchiveChannelsIdxs = reactive(new Map<number, number[]>()); // device id -> selected channel indices (1-based)
+        const selectedArchiveChannelsIdxs = ref(new Map<number, number[]>()); // device id -> selected channel indices (1-based)
 
         const isGroupExpanded = (groupId: string) => {
-            return expandedGroupIds.has(groupId);
+            return expandedGroupIds.value.has(groupId);
         };
         const isDeviceExpanded = (groupId: string | null, deviceId: number) => {
-            return hasArrayOptionInMap(expandedDeviceIds, groupId, deviceId);
+            return hasArrayOptionInMap(expandedDeviceIds.value, groupId, deviceId);
         };
         const toggleGroupExpanded = (groupId: string) => {
-            toggleValueInSet(expandedGroupIds, groupId);
+            toggleValueInSet(expandedGroupIds.value, groupId);
         };
         const toggleDeviceExpanded = (groupId: string | null, deviceId: number) => {
-            toggleArrayOptionInMap(expandedDeviceIds, groupId, deviceId);
+            toggleArrayOptionInMap(expandedDeviceIds.value, groupId, deviceId);
         };
 
         const isDeviceSelected = (deviceId: number) => {
             if (mode.value === 'online') {
-                return selectedOnlineDeviceIds.has(deviceId);
+                return selectedOnlineDeviceIds.value.has(deviceId);
             } else {
                 return selectedArchiveDeviceId.value === deviceId;
             }
         };
         const toggleDeviceSelected = (deviceId: number) => {
             if (mode.value === 'online') {
-                toggleValueInSet(selectedOnlineDeviceIds, deviceId);
+                toggleValueInSet(selectedOnlineDeviceIds.value, deviceId);
             } else {
                 selectedArchiveDeviceId.value =
                     deviceId === selectedArchiveDeviceId.value ? null : deviceId;
@@ -79,9 +79,9 @@ export const useSettingsStore = defineStore(
             if (!isDeviceSelected(deviceId)) return false;
 
             if (mode.value === 'online') {
-                return hasArrayOptionInMap(selectedOnlineChannelIdxs, deviceId, channelIdx);
+                return hasArrayOptionInMap(selectedOnlineChannelIdxs.value, deviceId, channelIdx);
             } else {
-                return hasArrayOptionInMap(selectedArchiveChannelsIdxs, deviceId, channelIdx);
+                return hasArrayOptionInMap(selectedArchiveChannelsIdxs.value, deviceId, channelIdx);
             }
         };
         const toggleChannelSelected = (deviceId: number, channelIdx: number) => {
@@ -90,21 +90,21 @@ export const useSettingsStore = defineStore(
             }
 
             if (mode.value === 'online') {
-                toggleArrayOptionInMap(selectedOnlineChannelIdxs, deviceId, channelIdx);
+                toggleArrayOptionInMap(selectedOnlineChannelIdxs.value, deviceId, channelIdx);
             } else {
-                toggleArrayOptionInMap(selectedArchiveChannelsIdxs, deviceId, channelIdx);
+                toggleArrayOptionInMap(selectedArchiveChannelsIdxs.value, deviceId, channelIdx);
             }
         };
         const deleteDevice = (deviceId: number) => {
-            selectedOnlineDeviceIds.delete(deviceId);
-            selectedOnlineChannelIdxs.delete(deviceId);
-            selectedArchiveChannelsIdxs.delete(deviceId);
+            selectedOnlineDeviceIds.value.delete(deviceId);
+            selectedOnlineChannelIdxs.value.delete(deviceId);
+            selectedArchiveChannelsIdxs.value.delete(deviceId);
 
             if (selectedArchiveDeviceId.value === deviceId) {
                 selectedArchiveDeviceId.value = null;
             }
-            for (const [groupId, deviceIds] of expandedDeviceIds.entries()) {
-                expandedDeviceIds.set(
+            for (const [groupId, deviceIds] of expandedDeviceIds.value.entries()) {
+                expandedDeviceIds.value.set(
                     groupId,
                     deviceIds.filter((id) => id !== deviceId),
                 );
