@@ -7,14 +7,8 @@
         </template>
         <template #content>
             <div class="device-card-actions__buttons">
-                <UiButton type="secondary">
-                    Редактировать
-                    <IconEdit />
-                </UiButton>
-                <UiButton type="warn">
-                    Удалить
-                    <IconDelete />
-                </UiButton>
+                <FeatureDeviceEditingButton :device="device" />
+                <FeatureDeviceDeletionButton :device-id="device.id" />
             </div>
         </template>
     </UiPopover>
@@ -24,8 +18,13 @@
 import UiPopover from '@/shared/ui/popover.vue';
 import UiButton from '@/shared/ui/button.vue';
 import IconDots from '@/shared/icons/dots.vue';
-import IconDelete from '@/shared/icons/delete.vue';
-import IconEdit from '@/shared/icons/edit.vue';
+import FeatureDeviceEditingButton from '@/features/device-editing/button.vue';
+import FeatureDeviceDeletionButton from '@/features/device-deletion/button.vue';
+import type { Device } from '@/shared/api/types';
+
+defineProps<{
+    device: Device;
+}>();
 </script>
 
 <style scoped>

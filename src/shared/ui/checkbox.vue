@@ -1,21 +1,30 @@
 <template>
     <span class="checkbox">
-        <input :id :checked v-model="value" type="checkbox" class="checkbox__input" />
-        <span :class="['checkbox__box', { checked }]">
+        <input :id v-model="value" type="checkbox" class="checkbox__input" />
+        <span :class="['checkbox__box', { checked: value }]">
             <IconCheck />
         </span>
     </span>
 </template>
 
 <script setup lang="ts">
+import { watch } from 'vue';
 import IconCheck from '@/shared/icons/check.vue';
 
-defineProps<{
+const { checked } = defineProps<{
     id?: string;
     checked?: boolean;
 }>();
 
 const value = defineModel<boolean>();
+
+watch(
+    () => checked,
+    () => {
+        value.value = checked;
+    },
+    { immediate: true },
+);
 </script>
 
 <style scoped>

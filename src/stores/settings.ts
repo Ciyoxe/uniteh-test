@@ -95,6 +95,21 @@ export const useSettingsStore = defineStore(
                 toggleArrayOptionInMap(selectedArchiveChannelsIdxs, deviceId, channelIdx);
             }
         };
+        const deleteDevice = (deviceId: number) => {
+            selectedOnlineDeviceIds.delete(deviceId);
+            selectedOnlineChannelIdxs.delete(deviceId);
+            selectedArchiveChannelsIdxs.delete(deviceId);
+
+            if (selectedArchiveDeviceId.value === deviceId) {
+                selectedArchiveDeviceId.value = null;
+            }
+            for (const [groupId, deviceIds] of expandedDeviceIds.entries()) {
+                expandedDeviceIds.set(
+                    groupId,
+                    deviceIds.filter((id) => id !== deviceId),
+                );
+            }
+        };
 
         return {
             mode,
@@ -113,6 +128,7 @@ export const useSettingsStore = defineStore(
             toggleDeviceExpanded,
             toggleDeviceSelected,
             toggleChannelSelected,
+            deleteDevice,
         };
     },
     {

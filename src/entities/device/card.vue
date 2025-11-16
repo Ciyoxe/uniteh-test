@@ -16,7 +16,7 @@
             </div>
             <div class="device-card__footer">
                 <IconAlert :class="['device-card__alert', { shown: isAlarmShown }]" />
-                <DeviceCardActions class="device-card__actions" />
+                <DeviceCardActions class="device-card__actions" :device />
 
                 <UiButton @click="settingsStore.toggleDeviceExpanded(groupId, device.id)">
                     <IconChevron :direction="expanded ? 'up' : 'down'" />

@@ -11,6 +11,7 @@
     font-family: 'Roboto', sans-serif;
     color: var(--color-text);
 
+    --color-background: #eee;
     --color-base: #f3f4f6;
     --color-primary: #c0d2fa;
     --color-secondary: #9cd3dd;
@@ -28,4 +29,8 @@ ol,
 ul {
     margin: 0;
     padding: 0;
+}
+
+body {
+    background-color: var(--color-background);
 }
