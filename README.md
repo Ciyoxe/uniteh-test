@@ -1,48 +1,56 @@
-# uniteh-test
+# Управление устройствами и камерами (Vue 3 + Pinia + Яндекс.Карта)
 
-This template should help get you started developing with Vue 3 in Vite.
+Одностраничное приложение для управления устройствами и их камерами с двумя режимами работы (онлайн и архивный), боковой панелью управления и интеграцией с Яндекс.Картами. Данные устройств и групп приходят через моковый WebSocket‑сервис. Состояние (режим, выборы, свёрнутость) хранится в Pinia и сохраняется между сессиями (localStorage).
 
-## Recommended IDE Setup
+## Возможности
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- **Два режима работы**
+    - **Онлайн**: множественный выбор устройств, статус Wi‑Fi (1–5), тревоги с анимацией, выбор каналов (кнопки «Камера N»).
+    - **Архив**: одиночный выбор устройства (остальные чекбоксы блокируются), тревоги игнорируются.
+- **Группы устройств**: сворачиваемые группы и список негруппированных устройств.
+- **Карта**
+    - Яндекс.Карта с маркерами выбранных устройств.
+    - Балун с подробностями: название, ID, число каналов, время, координаты.
+    - Автомасштабирование: центрирование для одного устройства и bounds для нескольких.
+- **Поиск** по имени/ID в реальном времени (в боковой панели).
+- **Меню действий** (троеточие): редактирование, удаление.
+- **Удаление устройства**: из данных, групп и всех состояний выбора (интерфейс и карта обновляются).
+- **Персистентность**: режим, выборы устройств/камер, свёрнутость групп/устройств сохраняются между сессиями.
 
-## Recommended Browser Setup
+## Стек и архитектура
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-    - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-    - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-    - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-    - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+- Vue 3 + `<script setup>` + Vite
+- Pinia + `pinia-plugin-persistedstate` (localStorage)
+- Карта: `vue-yandex-maps` (ymaps3)
+- Утилиты: `@vueuse/core`, анимации `@morev/vue-transitions`
+- Чистый CSS без фреймворков
 
-## Type Support for `.vue` Imports in TS
+Основные каталоги:
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- `src/app` — точка входа, базовые стили и layout
+- `src/widgets` — крупные виджеты (панель управления, обёртка карты)
+- `src/features` — функциональные блоки (карта, поиск, редактирование, удаление, загрузка данных)
+- `src/entities` — умные компоненты сущностей (группы, устройства, каналы)
+- `src/stores` — Pinia‑сторы (`settings`, `entities`)
+- `src/shared` — общий код: UI, иконки, API‑мок, типы, утилиты
 
-## Customize configuration
+## Установка и запуск
 
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
+```bash
+npm i
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+## Команды
 
-```sh
-npm run build
-```
+- `npm run dev` — режим разработки
+- `npm run build` — сборка
+- `npm run lint` — ESLint (с автофиксом)
+- `npm run format` — Prettier форматирование
 
-### Lint with [ESLint](https://eslint.org/)
+## Качество кода
 
-```sh
-npm run lint
-```
+- ESLint + `eslint-plugin-vue`
+- Prettier
+- Проверка типов через `vue-tsc`
+- Рекомендованные расширения VS Code: `.vscode/extensions.json`

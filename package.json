@@ -6,6 +6,15 @@
     "engines": {
         "node": "^20.19.0 || >=22.12.0"
     },
+    "os": [
+        "darwin",
+        "linux",
+        "win32"
+    ],
+    "cpu": [
+        "x64",
+        "arm64"
+    ],
     "scripts": {
         "dev": "vite",
         "build": "run-p type-check \"build-only {@}\" --",
