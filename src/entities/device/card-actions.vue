@@ -15,12 +15,12 @@
 </template>
 
 <script setup lang="ts">
-import UiPopover from '@/shared/ui/popover.vue';
-import UiButton from '@/shared/ui/button.vue';
-import IconDots from '@/shared/icons/dots.vue';
-import FeatureDeviceEditingButton from '@/features/device-editing/button.vue';
-import FeatureDeviceDeletionButton from '@/features/device-deletion/button.vue';
 import type { Device } from '@/shared/api/types';
+import IconDots from '@/shared/icons/dots.vue';
+import UiButton from '@/shared/ui/button.vue';
+import UiPopover from '@/shared/ui/popover.vue';
+import FeatureDeviceDeletionButton from '@/features/device-deletion/button.vue';
+import FeatureDeviceEditingButton from '@/features/device-editing/button.vue';
 
 defineProps<{
     device: Device;

@@ -18,10 +18,10 @@
 import { computed } from 'vue';
 import { TransitionExpand } from '@morev/vue-transitions';
 import type { DevicesGroup } from '@/shared/api/types';
-import { useSettingsStore } from '@/stores/settings';
 import { useEntitiesStore } from '@/stores/entities';
-import EntityDeviceCardsList from '@/entities/device/cards-list.vue';
+import { useSettingsStore } from '@/stores/settings';
 import IconChevron from '@/shared/icons/chevron.vue';
+import EntityDeviceCardsList from '@/entities/device/cards-list.vue';
 
 const { group } = defineProps<{
     group: DevicesGroup;

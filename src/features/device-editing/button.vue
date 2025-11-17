@@ -6,7 +6,7 @@
         <Teleport to="body">
             <UiDialog v-model="modalOpen">
                 <p class="device-editing-button__title">
-                    Редактирование устройства {{ device.id }}
+                    Редактирование устройства ID: {{ device.id }}
                 </p>
                 <FeatureDeviceEditingForm :device @cancel="cancelEditing" @save="confirmSaving" />
             </UiDialog>
@@ -16,12 +16,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import UiButton from '@/shared/ui/button.vue';
-import UiDialog from '@/shared/ui/dialog.vue';
-import IconEdit from '@/shared/icons/edit.vue';
-import FeatureDeviceEditingForm from './form.vue';
 import type { Device } from '@/shared/api/types';
 import { useEntitiesStore } from '@/stores/entities';
+import IconEdit from '@/shared/icons/edit.vue';
+import UiButton from '@/shared/ui/button.vue';
+import UiDialog from '@/shared/ui/dialog.vue';
+import FeatureDeviceEditingForm from './form.vue';
 
 const { device } = defineProps<{
     device: Device;

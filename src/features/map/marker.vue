@@ -22,12 +22,12 @@
 </template>
 
 <script setup lang="ts">
-import UiPopover from '@/shared/ui/popover.vue';
-import IconLocation from '@/shared/icons/location.vue';
-import type { Device } from '@/shared/api/types';
-import { useSettingsStore } from '@/stores/settings';
 import { computed } from 'vue';
 import { formatDatetime } from '@/shared/lib/utils';
+import type { Device } from '@/shared/api/types';
+import { useSettingsStore } from '@/stores/settings';
+import IconLocation from '@/shared/icons/location.vue';
+import UiPopover from '@/shared/ui/popover.vue';
 
 const { device } = defineProps<{
     device: Device;

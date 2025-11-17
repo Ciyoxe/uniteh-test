@@ -25,6 +25,10 @@ svg {
     color: #0002;
 }
 path.active {
-    color: color-mix(in srgb, #6bcf6b calc((v-bind(strength) - 1) * 25%), #8d1212);
+    color: color-mix(
+        in srgb,
+        var(--color-success) calc((v-bind(strength) - 1) * 25%),
+        var(--color-danger)
+    );
 }
 </style>

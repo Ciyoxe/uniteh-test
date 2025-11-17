@@ -7,11 +7,11 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import { watchDebounced } from '@vueuse/core';
+import { useEntitiesStore } from '@/stores/entities';
 import IconSearch from '@/shared/icons/search.vue';
 import UiInput from '@/shared/ui/input.vue';
-import { useEntitiesStore } from '@/stores/entities';
-import { watchDebounced } from '@vueuse/core';
-import { ref } from 'vue';
 
 const entitiesStore = useEntitiesStore();
 const searchQuery = ref('');

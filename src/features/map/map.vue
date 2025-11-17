@@ -30,6 +30,7 @@
 
 <script setup lang="ts">
 import { computed, ref, shallowRef } from 'vue';
+import { TransitionPresets, useTransition, watchDebounced } from '@vueuse/core';
 import { TransitionFade } from '@morev/vue-transitions';
 import type { LngLat, YMap } from '@yandex/ymaps3-types';
 import {
@@ -39,11 +40,10 @@ import {
     YandexMapMarker,
     getLocationFromBounds,
 } from 'vue-yandex-maps';
+import type { Device } from '@/shared/api/types';
 import { useEntitiesStore } from '@/stores/entities';
 import { useSettingsStore } from '@/stores/settings';
 import FeatureMapMarker from './marker.vue';
-import type { Device } from '@/shared/api/types';
-import { TransitionPresets, useTransition, watchDebounced } from '@vueuse/core';
 
 const map = shallowRef<YMap>();
 const entitiesStore = useEntitiesStore();

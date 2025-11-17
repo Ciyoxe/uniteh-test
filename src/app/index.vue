@@ -8,9 +8,9 @@
 
 <script setup lang="ts">
 import '@/app/index.css';
+import { useMediaQuery } from '@vueuse/core';
 import { fetchEntities } from '@/features/data-fetching/fetch-entities';
 import WidgetBurgerMenu from '@/widgets/burger-menu.vue';
-import { useMediaQuery } from '@vueuse/core';
 import WidgetControls from '../widgets/controls.vue';
 import WidgetMap from '../widgets/map.vue';
 

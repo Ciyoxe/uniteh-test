@@ -30,11 +30,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, toRaw, computed } from 'vue';
+import { computed, ref, toRaw, watch } from 'vue';
+import type { Device } from '@/shared/api/types';
 import UiCheckbox from '@/shared/ui/checkbox.vue';
 import UiInput from '@/shared/ui/input.vue';
 import UiButton from '@/shared/ui/button.vue';
-import type { Device } from '@/shared/api/types';
 
 const { device } = defineProps<{
     device: Device;

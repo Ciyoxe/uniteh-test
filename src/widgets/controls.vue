@@ -23,9 +23,9 @@
 </template>
 
 <script setup lang="ts">
-import UiButton from '@/shared/ui/button.vue';
 import { useSettingsStore } from '@/stores/settings';
 import { useEntitiesStore } from '@/stores/entities';
+import UiButton from '@/shared/ui/button.vue';
 import EntityGroupCardsList from '@/entities/group/cards-list.vue';
 import EntityDeviceCardsList from '@/entities/device/cards-list.vue';
 import FeatureSearchBar from '@/features/search/bar.vue';

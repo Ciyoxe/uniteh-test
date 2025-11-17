@@ -1,6 +1,6 @@
 <template>
-    <div class="device-card" :for="`device-card-${device.id}`">
-        <label class="device-card__label">
+    <div class="device-card">
+        <label class="device-card__label" :for="`device-card-${device.id}`">
             <div class="device-card__header">
                 <UiCheckbox
                     :id="`device-card-${device.id}`"
@@ -30,22 +30,21 @@
         </TransitionExpand>
     </div>
 </template>
->
 
 <script setup lang="ts">
-import { TransitionExpand } from '@morev/vue-transitions';
 import { computed } from 'vue';
+import { TransitionExpand } from '@morev/vue-transitions';
+import { formatDatetime } from '@/shared/lib/utils';
 import { useSettingsStore } from '@/stores/settings';
 import type { Device } from '@/shared/api/types';
-import IconChevron from '@/shared/icons/chevron.vue';
-import IconCar from '@/shared/icons/car.vue';
-import IconSignal from '@/shared/icons/signal.vue';
 import IconAlert from '@/shared/icons/alert.vue';
-import UiCheckbox from '@/shared/ui/checkbox.vue';
+import IconCar from '@/shared/icons/car.vue';
+import IconChevron from '@/shared/icons/chevron.vue';
+import IconSignal from '@/shared/icons/signal.vue';
 import UiButton from '@/shared/ui/button.vue';
-import EntityDeviceCardActions from './card-actions.vue';
+import UiCheckbox from '@/shared/ui/checkbox.vue';
 import EntityChannelCardsGrid from '../channel/cards-grid.vue';
-import { formatDatetime } from '@/shared/lib/utils';
+import EntityDeviceCardActions from './card-actions.vue';
 
 const { device, groupId = null } = defineProps<{
     groupId?: string | null;

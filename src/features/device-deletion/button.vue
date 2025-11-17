@@ -19,11 +19,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useEntitiesStore } from '@/stores/entities';
+import { useSettingsStore } from '@/stores/settings';
 import IconDelete from '@/shared/icons/delete.vue';
 import UiButton from '@/shared/ui/button.vue';
 import UiDialog from '@/shared/ui/dialog.vue';
-import { useEntitiesStore } from '@/stores/entities';
-import { useSettingsStore } from '@/stores/settings';
 
 const { deviceId } = defineProps<{
     deviceId: number;
