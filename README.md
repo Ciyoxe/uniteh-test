@@ -54,3 +54,10 @@ npm run dev
 - Prettier
 - Проверка типов через `vue-tsc`
 - Рекомендованные расширения VS Code: `.vscode/extensions.json`
+
+## Скриншоты
+<img width="1423" height="869" alt="image" src="https://github.com/user-attachments/assets/d7232d5b-479e-43aa-be95-95ea7716407b" />
+<img width="1351" height="855" alt="image" src="https://github.com/user-attachments/assets/6c02f22b-5353-4143-bfb2-4cd4245d6c03" />
+<img width="624" height="894" alt="image" src="https://github.com/user-attachments/assets/504ba7e2-0583-4111-9239-42286247a26b" />
+
+
