@@ -15,14 +15,18 @@
             </UiButton>
         </div>
         <FeatureSearchBar />
-        <div class="controls__scrollable">
-            <EntityGroupCardsList :groups="entitiesStore.getGroupsList()" />
-            <EntityDeviceCardsList :devices="entitiesStore.getDevicesInGroup(null)" />
+        <p v-if="groups.length === 0 && devices.length === 0" class="controls__empty">
+            Нет устройств
+        </p>
+        <div v-else class="controls__scrollable">
+            <EntityGroupCardsList :groups="groups" />
+            <EntityDeviceCardsList :devices="devices" />
         </div>
     </aside>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useSettingsStore } from '@/stores/settings';
 import { useEntitiesStore } from '@/stores/entities';
 import UiButton from '@/shared/ui/button.vue';
@@ -32,6 +36,9 @@ import FeatureSearchBar from '@/features/search/bar.vue';
 
 const settingsStore = useSettingsStore();
 const entitiesStore = useEntitiesStore();
+
+const groups = computed(() => entitiesStore.getGroupsList());
+const devices = computed(() => entitiesStore.getDevicesInGroup(null));
 </script>
 
 <style scoped>
@@ -60,5 +67,10 @@ const entitiesStore = useEntitiesStore();
     flex-direction: column;
     gap: 16px;
     overflow-y: scroll;
+}
+
+.controls__empty {
+    text-align: center;
+    font-size: 1.25em;
 }
 </style>
