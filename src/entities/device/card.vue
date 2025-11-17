@@ -1,6 +1,6 @@
 <template>
     <div class="device-card">
-        <label class="device-card__label" :for="`device-card-${device.id}`">
+        <label class="device-card__label" :for="`device-card-${device.id}`" :title="hintTitle">
             <div class="device-card__header">
                 <UiCheckbox
                     :id="`device-card-${device.id}`"
@@ -65,6 +65,13 @@ const disabled = computed(
         settingsStore.selectedArchiveDeviceId !== null &&
         !selected.value,
 );
+
+const hintTitle = computed(() => {
+    if (disabled.value) {
+        return 'В архивном режиме можно выбрать только одно устройство';
+    }
+    return '';
+});
 </script>
 
 <style scoped>
