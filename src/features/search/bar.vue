@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { watchDebounced } from '@vueuse/core';
 import { useEntitiesStore } from '@/stores/entities';
 import IconSearch from '@/shared/icons/search.vue';
@@ -22,5 +22,13 @@ watchDebounced(
         entitiesStore.searchQuery = query;
     },
     { debounce: 500 },
+);
+
+watch(
+    () => entitiesStore.searchQuery,
+    (query) => {
+        searchQuery.value = query ?? '';
+    },
+    { immediate: true },
 );
 </script>

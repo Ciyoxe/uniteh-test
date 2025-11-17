@@ -84,5 +84,6 @@ const formValid = computed(
 .device-editing-form__buttons {
     display: flex;
     gap: 16px;
+    margin-top: 16px;
 }
 </style>
