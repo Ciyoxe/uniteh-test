@@ -4,11 +4,16 @@ import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import App from './index.vue';
 
-createApp(App)
-    .use(createPinia().use(piniaPluginPersistedstate))
-    .use(
+const app = createApp(App);
+
+try {
+    app.use(
         createYmaps({
             apikey: import.meta.env.VITE_YANDEX_MAPS_API_KEY,
         }),
-    )
-    .mount('#app');
+    );
+} catch {
+    // we will handle error visually in FeatureMap component
+}
+
+app.use(createPinia().use(piniaPluginPersistedstate)).mount('#app');

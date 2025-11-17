@@ -29,5 +29,15 @@ main {
 
 .map {
     flex: 1 1 100%;
+    margin: 16px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+@media (width <= 1024px) {
+    .sidebar {
+        min-width: 100vw;
+        padding-top: 64px;
+    }
 }
 </style>

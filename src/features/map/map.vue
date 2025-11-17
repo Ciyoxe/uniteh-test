@@ -1,6 +1,7 @@
 <template>
     <div class="map">
         <YandexMap
+            v-if="hasApiKey"
             v-model="map"
             :settings="{ location: { center: [animatedX, animatedY], zoom: animatedZoom } }"
         >
@@ -10,17 +11,20 @@
                 v-for="device in selectedDevices"
                 :key="device.id"
                 :settings="{ coordinates: [device.lon, device.lat] }"
-                class="map__marker"
             >
                 <FeatureMapMarker :device />
             </YandexMapMarker>
         </YandexMap>
 
         <TransitionFade>
-            <div v-if="selectedDevices.length === 0" class="map__empty-overlay">
+            <div v-if="selectedDevices.length === 0 && hasApiKey" class="map__overlay">
                 <p>Нет выбранных устройств для отображения на карте</p>
             </div>
         </TransitionFade>
+
+        <div v-if="!hasApiKey" class="map__overlay">
+            <p>Не найден ключ VITE_YANDEX_MAPS_API_KEY в .env файле</p>
+        </div>
     </div>
 </template>
 
@@ -54,6 +58,8 @@ const selectedDevices = computed(() => {
               : [];
     return deviceIds.map((id) => entitiesStore.devices.get(id)).filter(Boolean) as Device[];
 });
+
+const hasApiKey = computed(() => Boolean(import.meta.env.VITE_YANDEX_MAPS_API_KEY));
 
 const minLon = computed(() => Math.min(...selectedDevices.value.map((device) => device.lon)));
 const maxLon = computed(() => Math.max(...selectedDevices.value.map((device) => device.lon)));
@@ -98,16 +104,11 @@ watchDebounced(
 </script>
 
 <style scoped>
-:deep(.__ymap-marker_wrapper) {
-    pointer-events: none;
-}
-
 .map {
-    height: 100dvh;
     position: relative;
 }
 
-.map__empty-overlay {
+.map__overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -121,5 +122,13 @@ watchDebounced(
     font-size: 1.5em;
     font-weight: bold;
     backdrop-filter: blur(10px);
+}
+
+.map__overlay p {
+    text-align: center;
+}
+
+:deep(.__ymap-marker_wrapper) {
+    pointer-events: none;
 }
 </style>
