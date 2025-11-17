@@ -8,6 +8,7 @@
                     :disabled
                     @change="settingsStore.toggleDeviceSelected(device.id)"
                 />
+                <p class="device-card__id">ID: {{ device.id }}</p>
                 <p class="device-card__name">{{ device.name }}</p>
             </div>
             <div v-if="settingsStore.mode === 'online'" class="device-card__online">

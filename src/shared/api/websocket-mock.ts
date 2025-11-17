@@ -1,6 +1,6 @@
 import type { Device, DevicesGroup } from './types';
 import { SampleDevices, SampleGroups } from './data';
-import { waitFor } from '@/shared/lib/utils';
+import { arrayToShuffled, waitFor } from '@/shared/lib/utils';
 
 type WebsocketDeviceEvent = {
     type: 'device_update';
@@ -15,20 +15,19 @@ type WebsocketApiEvent = WebsocketDeviceEvent | WebsocketGroupEvent;
 
 export const useWebsocketEventsStream = async (listener: (event: WebsocketApiEvent) => void) => {
     const delayMs = 200;
-
-    // simulate websocket events for devices and groups
-    for (const device of SampleDevices) {
-        await waitFor(delayMs);
-        listener({
-            type: 'device_update',
+    const events = [
+        ...SampleDevices.map((device) => ({
+            type: 'device_update' as const,
             device,
-        });
-    }
-    for (const group of SampleGroups) {
-        await waitFor(delayMs);
-        listener({
-            type: 'group_update',
+        })),
+        ...SampleGroups.map((group) => ({
+            type: 'group_update' as const,
             group,
-        });
+        })),
+    ];
+
+    for (const event of arrayToShuffled(events)) {
+        await waitFor(delayMs);
+        listener(event);
     }
 };

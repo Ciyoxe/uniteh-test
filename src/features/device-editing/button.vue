@@ -8,11 +8,7 @@
                 <p class="device-editing-button__title">
                     Редактирование устройства {{ device.id }}
                 </p>
-                <FeatureDeviceEditingForm
-                    :device
-                    @cancel="modalOpen = false"
-                    @save="confirmSaving"
-                />
+                <FeatureDeviceEditingForm :device @cancel="cancelEditing" @save="confirmSaving" />
             </UiDialog>
         </Teleport>
     </UiButton>
@@ -34,6 +30,9 @@ const { device } = defineProps<{
 const modalOpen = ref(false);
 const entitiesStore = useEntitiesStore();
 
+const cancelEditing = () => {
+    modalOpen.value = false;
+};
 const confirmSaving = (newDevice: Device) => {
     entitiesStore.devices.set(device.id, newDevice);
     modalOpen.value = false;

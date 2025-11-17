@@ -1,5 +1,10 @@
 <template>
-    <button :class="['channel-card', { selected }]" :disabled @click="toggleSelected">
+    <button
+        :class="['channel-card', { selected }]"
+        :disabled
+        :title="hintTitle"
+        @click="toggleSelected"
+    >
         <p class="channel-card__name">Камера {{ channelIndex }}</p>
     </button>
 </template>
@@ -17,6 +22,13 @@ const { deviceId, channelIndex } = defineProps<{
 
 const disabled = computed(() => !settingsStore.isDeviceSelected(deviceId));
 const selected = computed(() => settingsStore.isChannelSelected(deviceId, channelIndex));
+
+const hintTitle = computed(() => {
+    if (!disabled.value) {
+        return '';
+    }
+    return 'Выберите устройство, чтобы выбирать каналы';
+});
 
 const toggleSelected = () => {
     if (disabled.value) return;
