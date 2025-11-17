@@ -1,6 +1,13 @@
 <template>
     <span class="checkbox">
-        <input :id v-model="value" type="checkbox" class="checkbox__input" />
+        <input
+            :id
+            :disabled
+            :checked="value"
+            type="checkbox"
+            class="checkbox__input"
+            @change="value = !value"
+        />
         <span :class="['checkbox__box', { checked: value }]">
             <IconCheck />
         </span>
@@ -14,22 +21,30 @@ import IconCheck from '@/shared/icons/check.vue';
 const { checked } = defineProps<{
     id?: string;
     checked?: boolean;
+    disabled?: boolean;
 }>();
 
-const value = defineModel<boolean>();
+const value = defineModel<boolean>({ default: false });
+if (checked) {
+    value.value = checked;
+}
 
 watch(
     () => checked,
     () => {
         value.value = checked;
     },
-    { immediate: true },
 );
 </script>
 
 <style scoped>
 .checkbox {
     position: relative;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.checkbox:has(.checkbox__input:disabled) {
+    opacity: 0.3;
 }
 
 .checkbox__input {
@@ -37,6 +52,10 @@ watch(
     cursor: pointer;
     opacity: 0;
     inset: 0;
+}
+
+.checkbox__input:disabled {
+    cursor: not-allowed;
 }
 
 .checkbox__box {

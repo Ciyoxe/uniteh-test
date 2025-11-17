@@ -2,48 +2,61 @@
     <form class="device-editing-form" @submit.prevent>
         <label class="device-editing-form__label">
             <p>Тревога</p>
-            <UiCheckbox v-model="deviceFields.alarm" />
+            <UiCheckbox v-model="deviceCopy.alarm" />
         </label>
         <label class="device-editing-form__label">
             <p>Название</p>
-            <input
-                v-model="deviceFields.name"
-                type="text"
-                class="device-editing-form__input"
-                required
-            />
+            <UiInput v-model="deviceCopy.name" type="text" class="device-editing-form__input" />
         </label>
         <label class="device-editing-form__label">
             <p>Уровень сигнала</p>
-            <input
-                v-model="deviceFields.wifi"
+            <UiInput
+                v-model="deviceCopy.wifi"
                 type="number"
                 class="device-editing-form__input"
                 max="5"
                 min="1"
                 step="1"
-                required
             />
         </label>
+
+        <div class="device-editing-form__buttons">
+            <UiButton type="primary" @click="$emit('cancel')">Отмена</UiButton>
+            <UiButton type="warn" @click="$emit('save', deviceCopy)">Сохранить</UiButton>
+        </div>
     </form>
 </template>
 
 <script setup lang="ts">
+import { ref, watch, watchEffect, toRaw } from 'vue';
 import UiCheckbox from '@/shared/ui/checkbox.vue';
-import { watchEffect } from 'vue';
+import UiInput from '@/shared/ui/input.vue';
+import UiButton from '@/shared/ui/button.vue';
+import type { Device } from '@/shared/api/types';
 
-const deviceFields = defineModel<{
-    name: string;
-    wifi: number;
-    alarm: boolean;
-}>({ required: true });
+const { device } = defineProps<{
+    device: Device;
+}>();
+defineEmits<{
+    save: [newDevice: Device];
+    cancel: [];
+}>();
+
+const deviceCopy = ref(device);
+watch(
+    () => device,
+    () => {
+        deviceCopy.value = structuredClone(toRaw(device));
+    },
+    { deep: true, immediate: true },
+);
 
 watchEffect(() => {
-    if (deviceFields.value.wifi > 5) {
-        deviceFields.value.wifi = 5;
+    if (deviceCopy.value.wifi > 5) {
+        deviceCopy.value.wifi = 5;
     }
-    if (deviceFields.value.wifi < 1) {
-        deviceFields.value.wifi = 1;
+    if (deviceCopy.value.wifi < 1) {
+        deviceCopy.value.wifi = 1;
     }
 });
 </script>
@@ -69,5 +82,10 @@ watchEffect(() => {
 
 .device-editing-form__label p {
     min-width: 130px;
+}
+
+.device-editing-form__buttons {
+    display: flex;
+    gap: 16px;
 }
 </style>

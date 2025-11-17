@@ -37,10 +37,6 @@ const toggleSelected = () => {
     width: 100%;
 }
 
-.channel-card.enabled {
-    background-color: var(--color-primary);
-}
-
 .channel-card.selected {
     background-color: var(--color-accent);
 }

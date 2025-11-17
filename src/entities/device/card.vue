@@ -5,6 +5,7 @@
                 <UiCheckbox
                     :id="`device-card-${device.id}`"
                     :checked="selected"
+                    :disabled
                     @change="settingsStore.toggleDeviceSelected(device.id)"
                 />
                 <p class="device-card__name">{{ device.name }}</p>
@@ -16,7 +17,7 @@
             </div>
             <div class="device-card__footer">
                 <IconAlert :class="['device-card__alert', { shown: isAlarmShown }]" />
-                <DeviceCardActions class="device-card__actions" :device />
+                <EntityDeviceCardActions class="device-card__actions" :device />
 
                 <UiButton @click="settingsStore.toggleDeviceExpanded(groupId, device.id)">
                     <IconChevron :direction="expanded ? 'up' : 'down'" />
@@ -41,7 +42,7 @@ import IconSignal from '@/shared/icons/signal.vue';
 import IconAlert from '@/shared/icons/alert.vue';
 import UiCheckbox from '@/shared/ui/checkbox.vue';
 import UiButton from '@/shared/ui/button.vue';
-import DeviceCardActions from './card-actions.vue';
+import EntityDeviceCardActions from './card-actions.vue';
 import EntityChannelCardsGrid from '../channel/cards-grid.vue';
 
 const { device, groupId = null } = defineProps<{
@@ -55,6 +56,14 @@ const isAlarmShown = computed(() => device.alarm && settingsStore.mode === 'onli
 const timeFormatted = computed(() => new Date(device.timestamp).toLocaleString());
 const expanded = computed(() => settingsStore.isDeviceExpanded(groupId, device.id));
 const selected = computed(() => settingsStore.isDeviceSelected(device.id));
+
+// Block all checkboxes except selected one in archive mode
+const disabled = computed(
+    () =>
+        settingsStore.mode === 'archive' &&
+        settingsStore.selectedArchiveDeviceId !== null &&
+        !selected.value,
+);
 </script>
 
 <style scoped>
