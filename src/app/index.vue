@@ -1,43 +1,31 @@
 <template>
     <main>
-        <WidgetControls class="sidebar" />
-        <FeatureMap class="map" />
+        <WidgetControls v-if="!isMobileView" class="sidebar" />
+        <WidgetBurgerMenu v-else />
+        <WidgetMap />
     </main>
 </template>
 
-import './styles/index.css';
-
 <script setup lang="ts">
-import { fetchEntities } from '@/features/data-fetching/fetch-entities';
-import WidgetControls from '../widgets/controls.vue';
-import FeatureMap from '@/features/map/map.vue';
 import '@/app/index.css';
+import { fetchEntities } from '@/features/data-fetching/fetch-entities';
+import WidgetBurgerMenu from '@/widgets/burger-menu.vue';
+import { useMediaQuery } from '@vueuse/core';
+import WidgetControls from '../widgets/controls.vue';
+import WidgetMap from '../widgets/map.vue';
 
 fetchEntities();
+
+const isMobileView = useMediaQuery('(width <= 1024px)');
 </script>
 
 <style scoped>
 main {
     display: flex;
-    gap: 16px;
 }
 
 .sidebar {
     flex: 0 0;
     min-width: clamp(500px, 40vw, 700px);
-}
-
-.map {
-    flex: 1 1 100%;
-    margin: 16px;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-@media (width <= 1024px) {
-    .sidebar {
-        min-width: 100vw;
-        padding-top: 64px;
-    }
 }
 </style>

@@ -110,6 +110,7 @@ watchDebounced(
 
 .map__overlay {
     position: absolute;
+    padding: 32px;
     top: 0;
     left: 0;
     width: 100%;

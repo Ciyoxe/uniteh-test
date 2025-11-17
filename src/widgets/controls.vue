@@ -36,6 +36,7 @@ const entitiesStore = useEntitiesStore();
 
 <style scoped>
 .controls {
+    background-color: var(--color-background);
     display: flex;
     flex-direction: column;
     gap: 16px;
