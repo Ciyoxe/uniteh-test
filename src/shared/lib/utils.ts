@@ -12,3 +12,7 @@ export const arrayToShuffled = <T>(array: T[]) => {
 
     return result;
 };
+
+export const formatDatetime = (datetime: string) => {
+    return new Date(datetime).toLocaleString();
+};

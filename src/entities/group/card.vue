@@ -41,6 +41,7 @@ const devices = computed(() => entitiesStore.getDevicesInGroup(group.id));
 }
 
 .group__header {
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;

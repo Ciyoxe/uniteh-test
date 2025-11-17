@@ -3,15 +3,17 @@
         <button ref="trigger" class="popover__trigger" @click="open = !open">
             <slot name="trigger" :open />
         </button>
-        <div ref="content" :class="['popover__content', { open }]" @click.stop.prevent>
-            <slot name="content" :close="() => (open = false)" />
-        </div>
+        <Teleport to="body">
+            <div ref="content" :class="['popover__content', { open }]" @click.stop.prevent>
+                <slot name="content" :close="() => (open = false)" />
+            </div>
+        </Teleport>
     </div>
 </template>
 
 <script setup lang="ts">
-import { useTemplateRef, computed, watch } from 'vue';
-import { onClickOutside, useElementBounding, useWindowSize } from '@vueuse/core';
+import { useTemplateRef, computed, watch, ref } from 'vue';
+import { onClickOutside, useElementBounding, useRafFn, useWindowSize } from '@vueuse/core';
 
 defineSlots<{
     trigger: (props: { open: boolean }) => unknown;
@@ -34,9 +36,27 @@ onClickOutside(popover, () => {
     open.value = false;
 });
 
+useRafFn(() => {
+    if (open.value) {
+        triggerBounds.update();
+        contentBounds.update();
+    }
+});
+
+// prevents immediate closing after opening (because bounds are updated only when popover is open)
+const closingLocked = ref(false);
+
 watch(open, () => {
-    triggerBounds.update();
-    contentBounds.update();
+    if (open.value) {
+        closingLocked.value = true;
+        setTimeout(() => (closingLocked.value = false), 100);
+    }
+});
+
+watch([triggerBounds.x, triggerBounds.y], () => {
+    if (!closingLocked.value) {
+        open.value = false;
+    }
 });
 
 const calculateVerticalPosition = (): number => {
@@ -90,6 +110,8 @@ const calculateHorizontalPosition = (): number => {
 
 .popover__trigger {
     border: none;
+    padding: 0;
+    background-color: transparent;
     cursor: pointer;
     width: fit-content;
     height: fit-content;

@@ -29,7 +29,7 @@ defineProps<{
     border-top: none;
 }
 
-@media (width <= 1024px) {
+@media (width <= 1600px) {
     .channels-grid {
         grid-template-columns: repeat(3, 1fr);
     }

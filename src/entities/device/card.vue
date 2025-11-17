@@ -45,6 +45,7 @@ import UiCheckbox from '@/shared/ui/checkbox.vue';
 import UiButton from '@/shared/ui/button.vue';
 import EntityDeviceCardActions from './card-actions.vue';
 import EntityChannelCardsGrid from '../channel/cards-grid.vue';
+import { formatDatetime } from '@/shared/lib/utils';
 
 const { device, groupId = null } = defineProps<{
     groupId?: string | null;
@@ -54,7 +55,7 @@ const { device, groupId = null } = defineProps<{
 const settingsStore = useSettingsStore();
 
 const isAlarmShown = computed(() => device.alarm && settingsStore.mode === 'online');
-const timeFormatted = computed(() => new Date(device.timestamp).toLocaleString());
+const timeFormatted = computed(() => formatDatetime(device.timestamp));
 const expanded = computed(() => settingsStore.isDeviceExpanded(groupId, device.id));
 const selected = computed(() => settingsStore.isDeviceSelected(device.id));
 
@@ -97,6 +98,8 @@ const disabled = computed(
 
 .device-card__name {
     font-size: 1.2em;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
 }
 
 .device-card__name,

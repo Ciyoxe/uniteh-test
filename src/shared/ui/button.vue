@@ -1,12 +1,13 @@
 <template>
-    <button :class="['button', type]">
+    <button :class="['button', type]" :disabled>
         <slot />
     </button>
 </template>
 
 <script setup lang="ts">
 const { type = 'primary' } = defineProps<{
-    type?: 'primary' | 'secondary' | 'accent' | 'warn';
+    type?: 'primary' | 'accent' | 'warn';
+    disabled?: boolean;
 }>();
 </script>
 
@@ -23,7 +24,9 @@ const { type = 'primary' } = defineProps<{
     border-radius: 12px;
     padding: 12px;
     font-size: 1.25em;
-    transition: background-color 0.3s ease-in-out;
+    transition:
+        background-color 0.3s ease-in-out,
+        opacity 0.3s ease-in-out;
 }
 .button:hover {
     background-color: color-mix(in srgb, var(--current-color), black 7%);
@@ -31,12 +34,13 @@ const { type = 'primary' } = defineProps<{
 .button:active {
     background-color: color-mix(in srgb, var(--current-color), black 20%);
 }
+.button:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
 
 .button.primary {
     --current-color: var(--color-primary);
-}
-.button.secondary {
-    --current-color: var(--color-secondary);
 }
 .button.accent {
     --current-color: var(--color-accent);

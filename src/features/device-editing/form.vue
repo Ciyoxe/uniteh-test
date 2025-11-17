@@ -22,13 +22,15 @@
 
         <div class="device-editing-form__buttons">
             <UiButton type="primary" @click="$emit('cancel')">Отмена</UiButton>
-            <UiButton type="warn" @click="$emit('save', deviceCopy)">Сохранить</UiButton>
+            <UiButton type="warn" :disabled="!formValid" @click="$emit('save', deviceCopy)">
+                Сохранить
+            </UiButton>
         </div>
     </form>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, watchEffect, toRaw } from 'vue';
+import { ref, watch, toRaw, computed } from 'vue';
 import UiCheckbox from '@/shared/ui/checkbox.vue';
 import UiInput from '@/shared/ui/input.vue';
 import UiButton from '@/shared/ui/button.vue';
@@ -51,14 +53,12 @@ watch(
     { deep: true, immediate: true },
 );
 
-watchEffect(() => {
-    if (deviceCopy.value.wifi > 5) {
-        deviceCopy.value.wifi = 5;
-    }
-    if (deviceCopy.value.wifi < 1) {
-        deviceCopy.value.wifi = 1;
-    }
-});
+const formValid = computed(
+    () =>
+        deviceCopy.value.wifi >= 1 &&
+        deviceCopy.value.wifi <= 5 &&
+        deviceCopy.value.name.trim().length > 0,
+);
 </script>
 
 <style scoped>

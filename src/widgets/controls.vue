@@ -1,5 +1,5 @@
 <template>
-    <div class="controls">
+    <aside class="controls">
         <div class="controls__tabs">
             <UiButton
                 :type="settingsStore.mode === 'online' ? 'accent' : 'primary'"
@@ -15,9 +15,11 @@
             </UiButton>
         </div>
         <FeatureSearchBar />
-        <EntityGroupCardsList :groups="entitiesStore.getGroupsList()" />
-        <EntityDeviceCardsList :devices="entitiesStore.getDevicesInGroup(null)" />
-    </div>
+        <div class="controls__scrollable">
+            <EntityGroupCardsList :groups="entitiesStore.getGroupsList()" />
+            <EntityDeviceCardsList :devices="entitiesStore.getDevicesInGroup(null)" />
+        </div>
+    </aside>
 </template>
 
 <script setup lang="ts">
@@ -37,6 +39,8 @@ const entitiesStore = useEntitiesStore();
     display: flex;
     flex-direction: column;
     gap: 16px;
+    padding: 8px;
+    height: 100dvh;
 }
 
 .controls__tabs {
@@ -46,5 +50,14 @@ const entitiesStore = useEntitiesStore();
 
 .controls__tabs button {
     flex: 1;
+    max-height: 100%;
+}
+
+.controls__scrollable {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: scroll;
 }
 </style>

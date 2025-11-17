@@ -7,17 +7,19 @@
 }
 
 :root {
-    scrollbar-gutter: stable;
     font-family: 'Roboto', sans-serif;
     color: var(--color-text);
 
     --color-background: #eee;
     --color-base: #f3f4f6;
     --color-primary: #c0d2fa;
-    --color-secondary: #9cd3dd;
     --color-accent: #589deb;
     --color-text: #111827;
     --color-warn: #ffb4b4;
+
+    --color-danger: #ff0000;
+    --color-success: #00ff00;
+    --color-neutral: #0000ff;
 }
 
 svg {
@@ -32,5 +34,12 @@ ul {
 }
 
 body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
     background-color: var(--color-background);
+}
+
+* {
+    box-sizing: border-box;
 }
