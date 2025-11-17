@@ -14,6 +14,7 @@
                 Архив
             </UiButton>
         </div>
+        <FeatureSearchBar />
         <EntityGroupCardsList :groups="entitiesStore.getGroupsList()" />
         <EntityDeviceCardsList :devices="entitiesStore.getDevicesInGroup(null)" />
     </div>
@@ -25,6 +26,7 @@ import { useSettingsStore } from '@/stores/settings';
 import { useEntitiesStore } from '@/stores/entities';
 import EntityGroupCardsList from '@/entities/group/cards-list.vue';
 import EntityDeviceCardsList from '@/entities/device/cards-list.vue';
+import FeatureSearchBar from '@/features/search/bar.vue';
 
 const settingsStore = useSettingsStore();
 const entitiesStore = useEntitiesStore();

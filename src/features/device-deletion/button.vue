@@ -5,7 +5,9 @@
 
         <Teleport to="body">
             <UiDialog v-model="modalOpen">
-                <p>Вы уверены, что хотите удалить устройство {{ deviceId }}?</p>
+                <p class="device-deletion-button__title">
+                    Вы уверены, что хотите удалить устройство {{ deviceId }}?
+                </p>
                 <div class="device-deletion-button__buttons">
                     <UiButton type="primary" @click="modalOpen = false">Отмена</UiButton>
                     <UiButton type="warn" @click="confirmDeletion">Удалить</UiButton>
@@ -40,6 +42,10 @@ const confirmDeletion = () => {
 </script>
 
 <style scoped>
+.device-deletion-button__title {
+    font-size: 1.2em;
+}
+
 .device-deletion-button__buttons {
     display: flex;
     gap: 16px;

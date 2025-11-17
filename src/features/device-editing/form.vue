@@ -75,13 +75,10 @@ watchEffect(() => {
 
 .device-editing-form__input {
     width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    border: 2px solid color-mix(in srgb, var(--color-primary), black 20%);
 }
 
 .device-editing-form__label p {
-    min-width: 130px;
+    min-width: 135px;
 }
 
 .device-editing-form__buttons {
